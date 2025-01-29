@@ -1,16 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return []
+  },
+  // Disable proxy for development
+  webSocketTimeout: 30000,
   experimental: {
-    staleTimes: {
-      dynamic: 0,
-    },
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+    proxyTimeout: 30000,
+  }
 }
 
 export default nextConfig

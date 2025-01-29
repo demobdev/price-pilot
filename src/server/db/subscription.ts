@@ -3,6 +3,7 @@ import { db } from "@/drizzle/db"
 import { UserSubscriptionTable } from "@/drizzle/schema"
 import { CACHE_TAGS, dbCache, getUserTag, revalidateDbCache } from "@/lib/cache"
 import { SQL } from "drizzle-orm"
+import { eq } from "drizzle-orm"
 
 export async function createUserSubscription(
   data: typeof UserSubscriptionTable.$inferInsert
@@ -29,12 +30,10 @@ export async function createUserSubscription(
   return newSubscription
 }
 
-export function getUserSubscription(userId: string) {
-  const cacheFn = dbCache(getUserSubscriptionInternal, {
-    tags: [getUserTag(userId, CACHE_TAGS.subscription)],
+export async function getUserSubscription(userId: string) {
+  return await db.query.UserSubscriptionTable.findFirst({
+    where: eq(UserSubscriptionTable.clerkUserId, userId),
   })
-
-  return cacheFn(userId)
 }
 
 export async function updateUserSubscription(
@@ -62,7 +61,9 @@ export async function updateUserSubscription(
 export async function getUserSubscriptionTier(userId: string) {
   const subscription = await getUserSubscription(userId)
 
-  if (subscription == null) throw new Error("User has no subscription")
+  if (subscription == null) {
+    return subscriptionTiers.Free
+  }
 
   return subscriptionTiers[subscription.tier]
 }

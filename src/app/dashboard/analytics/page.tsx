@@ -43,7 +43,7 @@ export default async function AnalyticsPage({
   const productId = searchParams.productId
 
   return (
-    <>
+    <div className="grid gap-4">
       <div className="mb-6 flex justify-between items-baseline">
         <h1 className="text-3xl font-semibold">Analytics</h1>
         <HasPermission permission={canAccessAnalytics}>
@@ -119,7 +119,7 @@ export default async function AnalyticsPage({
           />
         </div>
       </HasPermission>
-    </>
+    </div>
   )
 }
 

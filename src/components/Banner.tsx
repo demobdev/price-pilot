@@ -1,5 +1,39 @@
 import { env } from "@/data/env/client"
 
+interface BannerProps {
+  message: string
+  mappings: {
+    coupon: string
+    discount: string
+    country: string
+  }
+  customization: {
+    backgroundColor: string
+    textColor: string
+    fontSize: string
+    isSticky: boolean
+    classPrefix?: string | null
+  }
+  canRemoveBranding: boolean
+}
+
+interface EnhancedBannerProps extends BannerProps {
+  branding?: {
+    icon?: string
+    position: 'left' | 'right'
+    animation?: 'fade' | 'slide'
+  }
+  layout?: {
+    padding?: string
+    borderRadius?: string
+    shadow?: string
+  }
+  responsive?: {
+    mobileLayout: 'stack' | 'inline'
+    hideOnMobile?: boolean
+  }
+}
+
 export function Banner({
   message,
   mappings,
@@ -43,12 +77,29 @@ export function Banner({
             font-size: ${customization.fontSize};
             font-family: inherit;
             padding: 1rem;
-            ${customization.isSticky ? "position: sticky;" : ""}
-            left: 0;
-            right: 0;
-            top: 0;
+            z-index: 9999;
+            ${customization.isSticky 
+              ? `
+                position: fixed;
+                left: 0;
+                right: 0;
+                top: 0;
+                width: 100%;
+              ` 
+              : ''
+            }
             text-wrap: balance;
             text-align: center;
+          }
+
+          ${customization.isSticky 
+            ? `
+              body {
+                margin-top: calc(${customization.fontSize} * 4) !important;
+                position: relative;
+              }
+            `
+            : ''
           }
 
           .${prefix}easy-ppp-branding {
@@ -56,6 +107,13 @@ export function Banner({
             font-size: inherit;
             display: inline-block;
             text-decoration: underline;
+          }
+
+          @media (max-width: 768px) {
+            .${prefix}easy-ppp-container {
+              font-size: calc(${customization.fontSize} * 0.9);
+              padding: 0.75rem;
+            }
           }
         `}
       </style>
@@ -72,7 +130,7 @@ export function Banner({
             className={`${prefix}easy-ppp-branding`}
             href={`${env.NEXT_PUBLIC_SERVER_URL}`}
           >
-            Powered by Easy PPP
+            Powered by PriceScope AI
           </a>
         )}
       </div>

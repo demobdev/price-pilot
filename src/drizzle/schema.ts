@@ -10,6 +10,7 @@ import {
   text,
   timestamp,
   uuid,
+  jsonb,
 } from "drizzle-orm/pg-core"
 
 const createdAt = timestamp("created_at", { withTimezone: true })
@@ -54,7 +55,7 @@ export const ProductCustomizationTable = pgTable("product_customizations", {
   locationMessage: text("location_message")
     .notNull()
     .default(
-      "Hey! It looks like you are from <b>{country}</b>. We support Parity Purchasing Power, so if you need it, use code <b>“{coupon}”</b> to get <b>{discount}%</b> off."
+      "Hey! It looks like you are from <b>{country}</b>. We support Parity Purchasing Power, so if you need it, use code <b>"{coupon}"</b> to get <b>{discount}%</b> off."
     ),
   backgroundColor: text("background_color")
     .notNull()
@@ -195,3 +196,14 @@ export const UserSubscriptionTable = pgTable(
     ).on(table.stripeCustomerId),
   })
 )
+
+export const AIOptimizationTable = pgTable("ai_optimizations", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  productId: uuid("product_id").references(() => ProductTable.id),
+  optimizedPrice: real("optimized_price").notNull(),
+  confidence: real("confidence").notNull(),
+  factors: jsonb("factors").notNull(),
+  reasoning: text("reasoning").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull()
+})

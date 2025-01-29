@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
+    "db:migrate": "tsx src/drizzle/migrate.ts",
     "db:studio": "drizzle-kit studio",
     "db:updateCountryGroups": "tsx --env-file=.env ./src/tasks/updateCountryGroups.ts",
     "stripe:webhooks": "stripe listen --forward-to localhost:3000/api/webhooks/stripe"
@@ -33,6 +33,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.0.0",
+    "dotenv": "^16.4.7",
     "drizzle-orm": "^0.33.0",
     "lucide-react": "^0.441.0",
     "next": "14.2.11",
