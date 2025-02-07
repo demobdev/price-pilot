@@ -21,11 +21,10 @@ const main = async () => {
   try {
     await migrate(db, { 
       migrationsFolder: './src/drizzle/migrations',
-      migrationsTable: 'drizzle_migrations'
+      migrationsTable: 'drizzle_migrations',
     });
     console.log('✅ Migration completed successfully');
     console.log('🔍 Checking database connection...');
-    
     // Test query to verify connection
     await sql`SELECT NOW();`;
     console.log('📡 Database connection verified');
