@@ -55,7 +55,7 @@ export const ProductCustomizationTable = pgTable("product_customizations", {
   locationMessage: text("location_message")
     .notNull()
     .default(
-      "Hey! It looks like you are from <b>{country}</b>. We support Parity Purchasing Power, so if you need it, use code <b>"{coupon}"</b> to get <b>{discount}%</b> off."
+      'Hey! It looks like you are from <b>${country}</b>. We support Parity Purchasing Power, so if you need it, use code <b>"${coupon}"</b> to get <b>${discount}%</b> off.'
     ),
   backgroundColor: text("background_color")
     .notNull()
@@ -170,10 +170,7 @@ export const countryGroupDiscountRelations = relations(
   })
 )
 
-export const TierEnum = pgEnum(
-  "tier",
-  Object.keys(subscriptionTiers) as [TierNames]
-)
+export const TierEnum = pgEnum("tier", ["Free", "Basic", "Standard", "Premium"])
 
 export const UserSubscriptionTable = pgTable(
   "user_subscriptions",
